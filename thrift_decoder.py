@@ -1,7 +1,7 @@
 import sys
 import json
 from thrift.Thrift import TType
-from thrift.protocol import TBinaryProtocol, TCompactProtocol, TProtocol
+from thrift.protocol import TProtocol, TBinaryProtocol, TCompactProtocol, TJSONProtocol
 from thrift.transport import TTransport
 
 typeNameMap = {
@@ -112,8 +112,13 @@ def main():
 
   input = bytes.fromhex(sys.argv[1])
   decoder = ThriftDecoder(protocolFactory=TCompactProtocol.TCompactProtocolFactory())
+  # decoder = ThriftDecoder(protocolFactory=TBinaryProtocol.TBinaryProtocolFactory())
+  # decoder = ThriftDecoder(protocolFactory=TJSONProtocol.TSimpleJSONProtocolFactory())
   output = decoder.decode(input)
-  print(json.dumps(output, indent=2))
+  try:
+    print(json.dumps(output, indent=2))
+  except:
+    print(output)
 
 
 if __name__ == "__main__":
